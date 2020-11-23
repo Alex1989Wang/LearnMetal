@@ -14,6 +14,9 @@
 		AC8ECDBF256BFCB8009F19FD /* LearnMetalUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC8ECDBE256BFCB8009F19FD /* LearnMetalUITests.swift */; };
 		AC8ECDDA256BFD98009F19FD /* DemoCasesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC8ECDD9256BFD98009F19FD /* DemoCasesViewController.swift */; };
 		AC8ECDE3256C0126009F19FD /* CaseDisplayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC8ECDE2256C0126009F19FD /* CaseDisplayViewController.swift */; };
+		AC8ECDEB256C0737009F19FD /* MetalController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC8ECDEA256C0737009F19FD /* MetalController.swift */; };
+		AC8ECDF1256C0934009F19FD /* Renderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC8ECDF0256C0934009F19FD /* Renderer.swift */; };
+		AC8ECDF9256C09D4009F19FD /* TriangleRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC8ECDF8256C09D4009F19FD /* TriangleRenderer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +50,9 @@
 		AC8ECDC0256BFCB8009F19FD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AC8ECDD9256BFD98009F19FD /* DemoCasesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoCasesViewController.swift; sourceTree = "<group>"; };
 		AC8ECDE2256C0126009F19FD /* CaseDisplayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaseDisplayViewController.swift; sourceTree = "<group>"; };
+		AC8ECDEA256C0737009F19FD /* MetalController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalController.swift; sourceTree = "<group>"; };
+		AC8ECDF0256C0934009F19FD /* Renderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Renderer.swift; sourceTree = "<group>"; };
+		AC8ECDF8256C09D4009F19FD /* TriangleRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TriangleRenderer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,6 +133,7 @@
 		AC8ECDD8256BFD82009F19FD /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				AC8ECDEF256C0926009F19FD /* Renderer */,
 				AC8ECDE1256C0119009F19FD /* Case */,
 				AC8ECDD9256BFD98009F19FD /* DemoCasesViewController.swift */,
 			);
@@ -137,8 +144,18 @@
 			isa = PBXGroup;
 			children = (
 				AC8ECDE2256C0126009F19FD /* CaseDisplayViewController.swift */,
+				AC8ECDEA256C0737009F19FD /* MetalController.swift */,
 			);
 			path = Case;
+			sourceTree = "<group>";
+		};
+		AC8ECDEF256C0926009F19FD /* Renderer */ = {
+			isa = PBXGroup;
+			children = (
+				AC8ECDF0256C0934009F19FD /* Renderer.swift */,
+				AC8ECDF8256C09D4009F19FD /* TriangleRenderer.swift */,
+			);
+			path = Renderer;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -273,6 +290,9 @@
 				AC8ECD9D256BFCB6009F19FD /* AppDelegate.swift in Sources */,
 				AC8ECDDA256BFD98009F19FD /* DemoCasesViewController.swift in Sources */,
 				AC8ECDE3256C0126009F19FD /* CaseDisplayViewController.swift in Sources */,
+				AC8ECDF1256C0934009F19FD /* Renderer.swift in Sources */,
+				AC8ECDF9256C09D4009F19FD /* TriangleRenderer.swift in Sources */,
+				AC8ECDEB256C0737009F19FD /* MetalController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

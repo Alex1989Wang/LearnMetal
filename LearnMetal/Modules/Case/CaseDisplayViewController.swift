@@ -11,6 +11,8 @@ import MetalKit
 class CaseDisplayViewController: UIViewController {
     
     private var metalView: MTKView!
+    
+    var renderer: Renderer?
 
     override func viewDidLoad() {
         super.viewDidLoad()
