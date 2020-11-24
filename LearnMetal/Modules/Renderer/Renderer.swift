@@ -6,8 +6,12 @@
 //
 
 import Foundation
+import MetalKit
 
 protocol Renderer {
+    
+    /// render target view
+    var targetView: MTKView? { get set }
     
     /// render 
     func render()

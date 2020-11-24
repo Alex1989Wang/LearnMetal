@@ -20,6 +20,8 @@ class MetalController {
         return device?.makeCommandQueue()
     }()
     
+    lazy var library: MTLLibrary? = device?.makeDefaultLibrary()
+
     //MARK: - init
     init() {
         

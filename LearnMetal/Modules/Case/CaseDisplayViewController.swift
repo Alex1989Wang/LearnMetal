@@ -13,6 +13,10 @@ class CaseDisplayViewController: UIViewController {
     private var metalView: MTKView!
     
     var renderer: Renderer?
+    
+    var demoCase: DemoCasesViewController.DemoCases = .triangle
+    
+    var loop: RenderLooper? = nil
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,6 +31,33 @@ class CaseDisplayViewController: UIViewController {
         metalView.translatesAutoresizingMaskIntoConstraints = false
         view.addConstraints(constraints)
         metalView.addConstraint(metalView.widthAnchor.constraint(equalTo: metalView.heightAnchor))
+        
+        // make renderer
+        makeRenderer()
+        
+        // start render
+        loop = RenderLooper()
+        loop?.loopCallback = { [weak self] in
+            self?.render()
+        }
+        loop?.setupLooper()
     }
     
+    deinit {
+        loop?.invalidate()
+    }
+}
+
+private extension CaseDisplayViewController {
+    func makeRenderer() {
+        switch demoCase {
+        case .triangle:
+            renderer = TriangleRenderer()
+        }
+        renderer?.targetView = metalView
+    }
+    
+    func render() {
+        renderer?.render()
+    }
 }

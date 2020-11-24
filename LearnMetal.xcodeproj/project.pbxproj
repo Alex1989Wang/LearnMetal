@@ -17,6 +17,9 @@
 		AC8ECDEB256C0737009F19FD /* MetalController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC8ECDEA256C0737009F19FD /* MetalController.swift */; };
 		AC8ECDF1256C0934009F19FD /* Renderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC8ECDF0256C0934009F19FD /* Renderer.swift */; };
 		AC8ECDF9256C09D4009F19FD /* TriangleRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC8ECDF8256C09D4009F19FD /* TriangleRenderer.swift */; };
+		AC8ECE02256D4E0D009F19FD /* TriangleVertex.metal in Sources */ = {isa = PBXBuildFile; fileRef = AC8ECE01256D4E0D009F19FD /* TriangleVertex.metal */; };
+		AC8ECE0A256D5285009F19FD /* TiangleFrag.metal in Sources */ = {isa = PBXBuildFile; fileRef = AC8ECE09256D5285009F19FD /* TiangleFrag.metal */; };
+		AC8ECE10256D5A5C009F19FD /* RenderLooper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC8ECE0F256D5A5C009F19FD /* RenderLooper.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +56,9 @@
 		AC8ECDEA256C0737009F19FD /* MetalController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalController.swift; sourceTree = "<group>"; };
 		AC8ECDF0256C0934009F19FD /* Renderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Renderer.swift; sourceTree = "<group>"; };
 		AC8ECDF8256C09D4009F19FD /* TriangleRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TriangleRenderer.swift; sourceTree = "<group>"; };
+		AC8ECE01256D4E0D009F19FD /* TriangleVertex.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = TriangleVertex.metal; sourceTree = "<group>"; };
+		AC8ECE09256D5285009F19FD /* TiangleFrag.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = TiangleFrag.metal; sourceTree = "<group>"; };
+		AC8ECE0F256D5A5C009F19FD /* RenderLooper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenderLooper.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,6 +109,7 @@
 		AC8ECD9B256BFCB6009F19FD /* LearnMetal */ = {
 			isa = PBXGroup;
 			children = (
+				AC8ECE00256D4DF0009F19FD /* Shaders */,
 				AC8ECDD8256BFD82009F19FD /* Modules */,
 				AC8ECD9C256BFCB6009F19FD /* AppDelegate.swift */,
 				AC8ECDA5256BFCB8009F19FD /* Assets.xcassets */,
@@ -133,6 +140,7 @@
 		AC8ECDD8256BFD82009F19FD /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				AC8ECE0E256D5A49009F19FD /* RenderLoop */,
 				AC8ECDEF256C0926009F19FD /* Renderer */,
 				AC8ECDE1256C0119009F19FD /* Case */,
 				AC8ECDD9256BFD98009F19FD /* DemoCasesViewController.swift */,
@@ -156,6 +164,23 @@
 				AC8ECDF8256C09D4009F19FD /* TriangleRenderer.swift */,
 			);
 			path = Renderer;
+			sourceTree = "<group>";
+		};
+		AC8ECE00256D4DF0009F19FD /* Shaders */ = {
+			isa = PBXGroup;
+			children = (
+				AC8ECE01256D4E0D009F19FD /* TriangleVertex.metal */,
+				AC8ECE09256D5285009F19FD /* TiangleFrag.metal */,
+			);
+			path = Shaders;
+			sourceTree = "<group>";
+		};
+		AC8ECE0E256D5A49009F19FD /* RenderLoop */ = {
+			isa = PBXGroup;
+			children = (
+				AC8ECE0F256D5A5C009F19FD /* RenderLooper.swift */,
+			);
+			path = RenderLoop;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -292,6 +317,9 @@
 				AC8ECDE3256C0126009F19FD /* CaseDisplayViewController.swift in Sources */,
 				AC8ECDF1256C0934009F19FD /* Renderer.swift in Sources */,
 				AC8ECDF9256C09D4009F19FD /* TriangleRenderer.swift in Sources */,
+				AC8ECE02256D4E0D009F19FD /* TriangleVertex.metal in Sources */,
+				AC8ECE0A256D5285009F19FD /* TiangleFrag.metal in Sources */,
+				AC8ECE10256D5A5C009F19FD /* RenderLooper.swift in Sources */,
 				AC8ECDEB256C0737009F19FD /* MetalController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
