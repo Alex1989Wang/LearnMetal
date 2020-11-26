@@ -11,6 +11,7 @@ class DemoCasesViewController: UIViewController {
     
     enum DemoCases: String, CaseIterable {
         case triangle = "Triangle"
+        case rectangle = "Rectangle"
     }
 
     private var tableView: UITableView!
@@ -35,11 +36,9 @@ class DemoCasesViewController: UIViewController {
 extension DemoCasesViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let demo = DemoCases.allCases[indexPath.row]
-        switch demo {
-        case .triangle:
-            let caseVC = CaseDisplayViewController()
-            navigationController?.pushViewController(caseVC, animated: true)
-        }
+        let caseVC = CaseDisplayViewController()
+        caseVC.demoCase = demo
+        navigationController?.pushViewController(caseVC, animated: true)
     }
 }
 

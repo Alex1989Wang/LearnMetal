@@ -7,14 +7,14 @@
 
 import UIKit
 
-class RenderLooper {
+class RenderLoop {
     
     private var displayLink: CADisplayLink?
     
     var loopCallback:(()->Void)?
 }
 
-extension RenderLooper {
+extension RenderLoop {
     func setupLooper() {
         if let _ = displayLink {
             displayLink?.invalidate()
@@ -30,7 +30,7 @@ extension RenderLooper {
     }
 }
 
-private extension RenderLooper {
+private extension RenderLoop {
     @objc func fired() {
         loopCallback?()
     }

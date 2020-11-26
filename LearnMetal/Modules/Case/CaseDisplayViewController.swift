@@ -16,7 +16,7 @@ class CaseDisplayViewController: UIViewController {
     
     var demoCase: DemoCasesViewController.DemoCases = .triangle
     
-    var loop: RenderLooper? = nil
+    var loop: RenderLoop? = nil
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,7 +36,7 @@ class CaseDisplayViewController: UIViewController {
         makeRenderer()
         
         // start render
-        loop = RenderLooper()
+        loop = RenderLoop()
         loop?.loopCallback = { [weak self] in
             self?.render()
         }
@@ -53,6 +53,8 @@ private extension CaseDisplayViewController {
         switch demoCase {
         case .triangle:
             renderer = TriangleRenderer()
+        case .rectangle:
+            renderer = RectangleRenderer()
         }
         renderer?.targetView = metalView
     }
