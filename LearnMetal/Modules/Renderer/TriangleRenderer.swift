@@ -7,6 +7,7 @@
 
 import Foundation
 import MetalKit
+import simd
 
 class TriangleRenderer {
     
@@ -20,13 +21,13 @@ class TriangleRenderer {
     init() {
         guard let device = MetalController.shared.device,
               let library = MetalController.shared.library else { return }
-        let vertData: [Float] = [
-            0.0, 0.5, 0.0,
-            0.5, -0.5, 0.0,
-            -0.5, -0.5, 0,0
+        let vertColorData: [VetexColor] = [
+            VetexColor(position: vector_float3(0.0, 0.5, 0.0), color: vector_float4(1, 0, 0, 1)),
+            VetexColor(position: vector_float3(0.5, -0.5, 0.0), color: vector_float4(0, 1, 0, 1)),
+            VetexColor(position: vector_float3(-0.5, -0.5, 0.0), color: vector_float4(0, 0, 1, 1)),
         ]
-        let length = vertData.count * MemoryLayout.size(ofValue: vertData[0])
-        vertexBuffer = device.makeBuffer(bytes: vertData, length: length, options: .storageModeShared)
+        let length = vertColorData.count * MemoryLayout.size(ofValue: vertColorData[0])
+        vertexBuffer = device.makeBuffer(bytes: vertColorData, length: length, options: .storageModeShared)
         let pipelineDescriptor = MTLRenderPipelineDescriptor()
         pipelineDescriptor.vertexFunction = library.makeFunction(name: "basic_vertex")
         pipelineDescriptor.fragmentFunction = library.makeFunction(name: "basic_fragment")
