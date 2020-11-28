@@ -55,6 +55,8 @@ private extension CaseDisplayViewController {
             renderer = TriangleRenderer()
         case .rectangle:
             renderer = RectangleRenderer()
+        case .texture:
+            renderer = TextureRenderer()
         }
         renderer?.targetView = metalView
     }

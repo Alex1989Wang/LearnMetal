@@ -21,6 +21,8 @@
 		AC8ECE0A256D5285009F19FD /* TiangleFrag.metal in Sources */ = {isa = PBXBuildFile; fileRef = AC8ECE09256D5285009F19FD /* TiangleFrag.metal */; };
 		AC8ECE10256D5A5C009F19FD /* RenderLoop.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC8ECE0F256D5A5C009F19FD /* RenderLoop.swift */; };
 		AC8ECE1E256FF517009F19FD /* RectangleRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC8ECE1D256FF517009F19FD /* RectangleRenderer.swift */; };
+		EE51C5CB2571F1C8009CE7A2 /* TextureRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE51C5CA2571F1C8009CE7A2 /* TextureRenderer.swift */; };
+		EE51C5D425721E29009CE7A2 /* MTKViewModesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE51C5D325721E29009CE7A2 /* MTKViewModesViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,6 +63,8 @@
 		AC8ECE09256D5285009F19FD /* TiangleFrag.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = TiangleFrag.metal; sourceTree = "<group>"; };
 		AC8ECE0F256D5A5C009F19FD /* RenderLoop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenderLoop.swift; sourceTree = "<group>"; };
 		AC8ECE1D256FF517009F19FD /* RectangleRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RectangleRenderer.swift; sourceTree = "<group>"; };
+		EE51C5CA2571F1C8009CE7A2 /* TextureRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextureRenderer.swift; sourceTree = "<group>"; };
+		EE51C5D325721E29009CE7A2 /* MTKViewModesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MTKViewModesViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -142,6 +146,7 @@
 		AC8ECDD8256BFD82009F19FD /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				EE51C5D225721E0A009CE7A2 /* ViewModes */,
 				AC8ECE0E256D5A49009F19FD /* RenderLoop */,
 				AC8ECDEF256C0926009F19FD /* Renderer */,
 				AC8ECDE1256C0119009F19FD /* Case */,
@@ -165,6 +170,7 @@
 				AC8ECDF0256C0934009F19FD /* Renderer.swift */,
 				AC8ECDF8256C09D4009F19FD /* TriangleRenderer.swift */,
 				AC8ECE1D256FF517009F19FD /* RectangleRenderer.swift */,
+				EE51C5CA2571F1C8009CE7A2 /* TextureRenderer.swift */,
 			);
 			path = Renderer;
 			sourceTree = "<group>";
@@ -184,6 +190,14 @@
 				AC8ECE0F256D5A5C009F19FD /* RenderLoop.swift */,
 			);
 			path = RenderLoop;
+			sourceTree = "<group>";
+		};
+		EE51C5D225721E0A009CE7A2 /* ViewModes */ = {
+			isa = PBXGroup;
+			children = (
+				EE51C5D325721E29009CE7A2 /* MTKViewModesViewController.swift */,
+			);
+			path = ViewModes;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -317,6 +331,8 @@
 			files = (
 				AC8ECD9D256BFCB6009F19FD /* AppDelegate.swift in Sources */,
 				AC8ECDDA256BFD98009F19FD /* DemoCasesViewController.swift in Sources */,
+				EE51C5D425721E29009CE7A2 /* MTKViewModesViewController.swift in Sources */,
+				EE51C5CB2571F1C8009CE7A2 /* TextureRenderer.swift in Sources */,
 				AC8ECDE3256C0126009F19FD /* CaseDisplayViewController.swift in Sources */,
 				AC8ECDF1256C0934009F19FD /* Renderer.swift in Sources */,
 				AC8ECDF9256C09D4009F19FD /* TriangleRenderer.swift in Sources */,
@@ -495,6 +511,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = Y39R442P5T;
 				INFOPLIST_FILE = LearnMetal/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -514,6 +531,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = Y39R442P5T;
 				INFOPLIST_FILE = LearnMetal/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

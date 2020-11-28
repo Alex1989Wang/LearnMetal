@@ -9,16 +9,28 @@ import UIKit
 
 class DemoCasesViewController: UIViewController {
     
+    enum Sections: String, CaseIterable {
+        case viewModes = "MTKView Modes"
+        case demos = "Demos"
+    }
+    
+    enum ViewModes:String, CaseIterable {
+        case delegate = "Delegate Mode"
+        case loopDriven = "Loop Driven"
+        case needsBased = "Needs Based Render"
+    }
+    
     enum DemoCases: String, CaseIterable {
         case triangle = "Triangle"
         case rectangle = "Rectangle"
+        case texture = "Texture"
     }
 
     private var tableView: UITableView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView = UITableView(frame: view.bounds)
+        tableView = UITableView(frame: view.bounds, style: .grouped)
         view.addSubview(tableView)
         let constraints = [view.topAnchor.constraint(equalTo: tableView.topAnchor),
                            view.leftAnchor.constraint(equalTo: tableView.leftAnchor),
@@ -35,22 +47,48 @@ class DemoCasesViewController: UIViewController {
 
 extension DemoCasesViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let demo = DemoCases.allCases[indexPath.row]
-        let caseVC = CaseDisplayViewController()
-        caseVC.demoCase = demo
-        navigationController?.pushViewController(caseVC, animated: true)
+        let section = Sections.allCases[indexPath.section]
+        switch section {
+        case .viewModes:
+            let mode = ViewModes.allCases[indexPath.row]
+            let modeTestVC = MTKViewModesViewController()
+            modeTestVC.mode = mode
+            navigationController?.pushViewController(modeTestVC, animated: true)
+        case .demos:
+            let demo = DemoCases.allCases[indexPath.row]
+            let caseVC = CaseDisplayViewController()
+            caseVC.demoCase = demo
+            navigationController?.pushViewController(caseVC, animated: true)
+        }
     }
 }
 
 extension DemoCasesViewController: UITableViewDataSource {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return Sections.allCases.count
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return DemoCases.allCases.count
+        let section = Sections.allCases[section]
+        switch section {
+        case .viewModes:
+            return ViewModes.allCases.count
+        case .demos:
+            return DemoCases.allCases.count
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: NSStringFromClass(UITableViewCell.self), for: indexPath)
-        let demo = DemoCases.allCases[indexPath.row]
-        cell.textLabel?.text = demo.rawValue
+        let section = Sections.allCases[indexPath.section]
+        switch section {
+        case .viewModes:
+            let mode = ViewModes.allCases[indexPath.row]
+            cell.textLabel?.text = mode.rawValue
+        case .demos:
+            let demo = DemoCases.allCases[indexPath.row]
+            cell.textLabel?.text = demo.rawValue
+        }
         return cell
     }
 }
