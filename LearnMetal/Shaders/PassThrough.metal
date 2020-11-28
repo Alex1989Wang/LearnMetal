@@ -1,11 +1,12 @@
 //
-//  TiangleFrag.metal
+//  TriangleVertex.metal
 //  LearnMetal
 //
 //  Created by 王江 on 2020/11/24.
 //
 
 #include <metal_stdlib>
+#include "ShaderTypes.h"
 using namespace metal;
 
 // Vertex shader outputs and fragment shader inputs
@@ -22,6 +23,14 @@ struct RasterizerData
     // fragment in the triangle.
     float4 color;
 };
+
+vertex RasterizerData basic_vertex(const device VetexColor *vertex_array [[ buffer(0) ]],
+                           unsigned int vid [[ vertex_id ]]) {
+    RasterizerData data;
+    data.position = float4(vertex_array[vid].position, 1);
+    data.color = vertex_array[vid].color;
+    return data;
+}
 
 fragment float4 basic_fragment(RasterizerData in [[stage_in]]) {
     return in.color;
