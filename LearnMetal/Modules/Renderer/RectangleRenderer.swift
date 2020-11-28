@@ -21,18 +21,18 @@ class RectangleRenderer: Renderer {
     init() {
         guard let device = MetalController.shared.device,
               let library = MetalController.shared.library else { return }
-        let vertData: [Float] = [
-            0.5, -0.5, 0.0,
-            -0.5, -0.5, 0,0,
-            -0.5, 0.5, 0.0,
-            0.5, 0.5, 0.0
+        let vertColorData: [VertexColor] = [
+            VertexColor(position: vector_float3(0.5, -0.5, 0.0), color: vector_float4(1, 0, 0, 1)),
+            VertexColor(position: vector_float3(-0.5, -0.5, 0.0), color: vector_float4(0, 1, 0, 1)),
+            VertexColor(position: vector_float3(-0.5, 0.5, 0.0), color: vector_float4(0, 0, 1, 1)),
+            VertexColor(position: vector_float3(0.5, 0.5, 0.0), color: vector_float4(1, 0, 0, 1)),
         ]
         let indexes: [UInt16] = [
             0, 1, 2,
             2, 3, 0
         ]
-        let length = vertData.count * MemoryLayout.size(ofValue: vertData[0])
-        vertexBuffer = device.makeBuffer(bytes: vertData, length: length, options: .storageModeShared)
+        let length = vertColorData.count * MemoryLayout.size(ofValue: vertColorData[0])
+        vertexBuffer = device.makeBuffer(bytes: vertColorData, length: length, options: .storageModeShared)
         let indexesLength = indexes.count * MemoryLayout.size(ofValue: indexes[0])
         indexBuffer = device.makeBuffer(bytes: indexes, length: indexesLength, options: .storageModeShared)
         let pipelineDescriptor = MTLRenderPipelineDescriptor()

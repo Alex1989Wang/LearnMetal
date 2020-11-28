@@ -24,7 +24,7 @@ struct RasterizerData
     float4 color;
 };
 
-vertex RasterizerData basic_vertex(const device VetexColor *vertex_array [[ buffer(0) ]],
+vertex RasterizerData basic_vertex(const device VertexColor *vertex_array [[ buffer(0) ]],
                            unsigned int vid [[ vertex_id ]]) {
     RasterizerData data;
     data.position = float4(vertex_array[vid].position, 1);

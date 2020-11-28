@@ -21,10 +21,10 @@ class TriangleRenderer {
     init() {
         guard let device = MetalController.shared.device,
               let library = MetalController.shared.library else { return }
-        let vertColorData: [VetexColor] = [
-            VetexColor(position: vector_float3(0.0, 0.5, 0.0), color: vector_float4(1, 0, 0, 1)),
-            VetexColor(position: vector_float3(0.5, -0.5, 0.0), color: vector_float4(0, 1, 0, 1)),
-            VetexColor(position: vector_float3(-0.5, -0.5, 0.0), color: vector_float4(0, 0, 1, 1)),
+        let vertColorData: [VertexColor] = [
+            VertexColor(position: vector_float3(0.0, 0.5, 0.0), color: vector_float4(1, 0, 0, 1)),
+            VertexColor(position: vector_float3(0.5, -0.5, 0.0), color: vector_float4(0, 1, 0, 1)),
+            VertexColor(position: vector_float3(-0.5, -0.5, 0.0), color: vector_float4(0, 0, 1, 1)),
         ]
         let length = vertColorData.count * MemoryLayout.size(ofValue: vertColorData[0])
         vertexBuffer = device.makeBuffer(bytes: vertColorData, length: length, options: .storageModeShared)

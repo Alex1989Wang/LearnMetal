@@ -18,6 +18,6 @@ typedef struct
 {
     vector_float3 position;
     vector_float4 color;
-} VetexColor;
+} VertexColor;
 
 #endif /* AAPLShaderTypes_h */
