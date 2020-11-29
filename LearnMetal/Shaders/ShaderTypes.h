@@ -20,4 +20,10 @@ typedef struct
     vector_float4 color;
 } VertexColor;
 
+typedef struct
+{
+    vector_float3 position;
+    vector_float2 textCoord;
+} VertexTextureCoord ;
+
 #endif /* AAPLShaderTypes_h */

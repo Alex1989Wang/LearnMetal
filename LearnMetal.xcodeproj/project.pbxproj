@@ -19,6 +19,8 @@
 		AC8ECDF9256C09D4009F19FD /* TriangleRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC8ECDF8256C09D4009F19FD /* TriangleRenderer.swift */; };
 		AC8ECE10256D5A5C009F19FD /* RenderLoop.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC8ECE0F256D5A5C009F19FD /* RenderLoop.swift */; };
 		AC8ECE1E256FF517009F19FD /* RectangleRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC8ECE1D256FF517009F19FD /* RectangleRenderer.swift */; };
+		AC8ECE2B2573D444009F19FD /* texture.png in Resources */ = {isa = PBXBuildFile; fileRef = AC8ECE2A2573D444009F19FD /* texture.png */; };
+		AC8ECE302573D75A009F19FD /* TexturePassThrough.metal in Sources */ = {isa = PBXBuildFile; fileRef = AC8ECE2F2573D75A009F19FD /* TexturePassThrough.metal */; };
 		EE51C5CB2571F1C8009CE7A2 /* TextureRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE51C5CA2571F1C8009CE7A2 /* TextureRenderer.swift */; };
 		EE51C5D425721E29009CE7A2 /* MTKViewModesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE51C5D325721E29009CE7A2 /* MTKViewModesViewController.swift */; };
 		EE51C5F02572352E009CE7A2 /* PassThrough.metal in Sources */ = {isa = PBXBuildFile; fileRef = EE51C5EF2572352E009CE7A2 /* PassThrough.metal */; };
@@ -60,6 +62,8 @@
 		AC8ECDF8256C09D4009F19FD /* TriangleRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TriangleRenderer.swift; sourceTree = "<group>"; };
 		AC8ECE0F256D5A5C009F19FD /* RenderLoop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenderLoop.swift; sourceTree = "<group>"; };
 		AC8ECE1D256FF517009F19FD /* RectangleRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RectangleRenderer.swift; sourceTree = "<group>"; };
+		AC8ECE2A2573D444009F19FD /* texture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = texture.png; sourceTree = "<group>"; };
+		AC8ECE2F2573D75A009F19FD /* TexturePassThrough.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = TexturePassThrough.metal; sourceTree = "<group>"; };
 		EE51C5CA2571F1C8009CE7A2 /* TextureRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextureRenderer.swift; sourceTree = "<group>"; };
 		EE51C5D325721E29009CE7A2 /* MTKViewModesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MTKViewModesViewController.swift; sourceTree = "<group>"; };
 		EE51C5DE25722E8A009CE7A2 /* ShaderTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShaderTypes.h; sourceTree = "<group>"; };
@@ -116,6 +120,7 @@
 			isa = PBXGroup;
 			children = (
 				EE51C5DF25722EC1009CE7A2 /* LearnMetal-Bridging-Header.h */,
+				AC8ECE282573D407009F19FD /* Resources */,
 				AC8ECE00256D4DF0009F19FD /* Shaders */,
 				AC8ECDD8256BFD82009F19FD /* Modules */,
 				AC8ECD9C256BFCB6009F19FD /* AppDelegate.swift */,
@@ -180,6 +185,7 @@
 			isa = PBXGroup;
 			children = (
 				EE51C5EF2572352E009CE7A2 /* PassThrough.metal */,
+				AC8ECE2F2573D75A009F19FD /* TexturePassThrough.metal */,
 				EE51C5DE25722E8A009CE7A2 /* ShaderTypes.h */,
 			);
 			path = Shaders;
@@ -191,6 +197,22 @@
 				AC8ECE0F256D5A5C009F19FD /* RenderLoop.swift */,
 			);
 			path = RenderLoop;
+			sourceTree = "<group>";
+		};
+		AC8ECE282573D407009F19FD /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				AC8ECE292573D417009F19FD /* Images */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		AC8ECE292573D417009F19FD /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				AC8ECE2A2573D444009F19FD /* texture.png */,
+			);
+			path = Images;
 			sourceTree = "<group>";
 		};
 		EE51C5D225721E0A009CE7A2 /* ViewModes */ = {
@@ -305,6 +327,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AC8ECE2B2573D444009F19FD /* texture.png in Resources */,
 				AC8ECDA9256BFCB8009F19FD /* LaunchScreen.storyboard in Resources */,
 				AC8ECDA6256BFCB8009F19FD /* Assets.xcassets in Resources */,
 			);
@@ -333,6 +356,7 @@
 			files = (
 				AC8ECD9D256BFCB6009F19FD /* AppDelegate.swift in Sources */,
 				AC8ECDDA256BFD98009F19FD /* DemoCasesViewController.swift in Sources */,
+				AC8ECE302573D75A009F19FD /* TexturePassThrough.metal in Sources */,
 				EE51C5D425721E29009CE7A2 /* MTKViewModesViewController.swift in Sources */,
 				EE51C5CB2571F1C8009CE7A2 /* TextureRenderer.swift in Sources */,
 				AC8ECDE3256C0126009F19FD /* CaseDisplayViewController.swift in Sources */,

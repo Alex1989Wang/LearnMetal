@@ -56,7 +56,9 @@ private extension CaseDisplayViewController {
         case .rectangle:
             renderer = RectangleRenderer()
         case .texture:
-            renderer = TextureRenderer()
+            if let fileUrl = Bundle.main.url(forResource: "texture", withExtension: "png") {
+                renderer = TextureRenderer(tartgetView: self.metalView, textureFile: fileUrl)
+            }
         }
         renderer?.targetView = metalView
     }
