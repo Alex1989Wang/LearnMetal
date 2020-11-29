@@ -31,10 +31,10 @@ class TextureRenderer: Renderer {
         texture = newTexture
         /// vertext data
         let vertexTextCoord: [VertexTextureCoord] = [
-            VertexTextureCoord(position: vector_float3(0.5, -1, 0), textCoord: vector_float2(1, 0)),
-            VertexTextureCoord(position: vector_float3(-0.5, -1, 0), textCoord: vector_float2(0, 0)),
-            VertexTextureCoord(position: vector_float3(-0.5, 1, 0), textCoord: vector_float2(0, 1)),
-            VertexTextureCoord(position: vector_float3(0.5, 1, 0), textCoord: vector_float2(1, 1)),
+            VertexTextureCoord(position: vector_float3(0.5, -1, 0), textCoord: vector_float2(1, 1)),
+            VertexTextureCoord(position: vector_float3(-0.5, -1, 0), textCoord: vector_float2(0, 1)),
+            VertexTextureCoord(position: vector_float3(-0.5, 1, 0), textCoord: vector_float2(0, 0)),
+            VertexTextureCoord(position: vector_float3(0.5, 1, 0), textCoord: vector_float2(1, 0)),
         ]
         let vertexIndexes: [UInt16] = [
             0, 1, 2,
