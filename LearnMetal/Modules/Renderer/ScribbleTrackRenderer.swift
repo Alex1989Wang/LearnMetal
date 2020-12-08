@@ -12,6 +12,9 @@ class ScribbleTrackRenderer: Renderer {
     /// renderer's target view
     var targetView: MTKView?
     
+    /// 滑动的points
+    private var trackPoints: [CGPoint] = []
+    
     /// the offscreen texture to be filled with
     private var singleTrackTexture: MTLTexture!
     
@@ -19,6 +22,7 @@ class ScribbleTrackRenderer: Renderer {
     
     private var trackVertexesBuffer: MTLBuffer?
     private var trackIndexesBuffer: MTLBuffer?
+    private var trackUniformBuffer: MTLBuffer?
     
     private var rendererPPLState: MTLRenderPipelineState?
     
@@ -58,6 +62,8 @@ class ScribbleTrackRenderer: Renderer {
         ]
         trackVertexesBuffer = device.makeBuffer(bytes: trackVertexes, length: trackVertexes.count * MemoryLayout.size(ofValue: trackVertexes[0]), options: .storageModeShared)
         trackIndexesBuffer = device.makeBuffer(bytes: indexes, length: indexes.count * MemoryLayout.size(ofValue: indexes[0]), options: .storageModeShared)
+        var uniforms: CircleUniform = CircleUniform(color: vector_float4(0, 1, 0, 1), diameter: trackWidth)
+        trackUniformBuffer = device.makeBuffer(bytes: &uniforms, length: MemoryLayout.size(ofValue: uniforms), options: .storageModeShared)
 
         // offscreen render pipeline state
         let singleTrackRenderPPLDescriptor = MTLRenderPipelineDescriptor()
@@ -92,11 +98,17 @@ class ScribbleTrackRenderer: Renderer {
     }
 }
 
+//MARK: - Public
+extension ScribbleTrackRenderer {
+    func appendInputPoints(_ points: [CGPoint]) {
+        trackPoints.append(contentsOf: points)
+    }
+}
+
 extension ScribbleTrackRenderer {
     func render() {
         guard let cmdQueue = MetalController.shared.commandQueue,
-              let mtlView = targetView,
-              let device = MetalController.shared.device else { return }
+              let mtlView = targetView else { return }
 
         // render cicle to an offscreen texture
         let circleRenderPassDesc = MTLRenderPassDescriptor()
@@ -111,9 +123,7 @@ extension ScribbleTrackRenderer {
               let tIndexesBuffer = trackIndexesBuffer else { return }
         circleEncoder.setVertexBuffer(trackVertexesBuffer, offset: 0, index: 0)
         circleEncoder.setRenderPipelineState(trackPPLState)
-        var uniforms: CircleUniform = CircleUniform(color: vector_float4(0, 1, 0, 1), diameter: trackWidth)
-        let fragUniformBuffer = device.makeBuffer(bytes: &uniforms, length: MemoryLayout.size(ofValue: uniforms), options: .storageModeShared)
-        circleEncoder.setFragmentBuffer(fragUniformBuffer, offset: 0, index: 0)
+        circleEncoder.setFragmentBuffer(trackUniformBuffer, offset: 0, index: 0)
         circleEncoder.drawIndexedPrimitives(type: .triangle, indexCount: 6, indexType: .uint16, indexBuffer: tIndexesBuffer, indexBufferOffset: 0)
         circleEncoder.endEncoding()
 

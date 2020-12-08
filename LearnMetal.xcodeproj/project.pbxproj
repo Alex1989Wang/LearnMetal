@@ -26,6 +26,7 @@
 		EE51C5CB2571F1C8009CE7A2 /* TextureRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE51C5CA2571F1C8009CE7A2 /* TextureRenderer.swift */; };
 		EE51C5D425721E29009CE7A2 /* MTKViewModesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE51C5D325721E29009CE7A2 /* MTKViewModesViewController.swift */; };
 		EE51C5F02572352E009CE7A2 /* PassThrough.metal in Sources */ = {isa = PBXBuildFile; fileRef = EE51C5EF2572352E009CE7A2 /* PassThrough.metal */; };
+		EE6D6325257F855D001F0CE5 /* ScribbleDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE6D6324257F855D001F0CE5 /* ScribbleDemoViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -73,6 +74,7 @@
 		EE51C5DE25722E8A009CE7A2 /* ShaderTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShaderTypes.h; sourceTree = "<group>"; };
 		EE51C5DF25722EC1009CE7A2 /* LearnMetal-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LearnMetal-Bridging-Header.h"; sourceTree = "<group>"; };
 		EE51C5EF2572352E009CE7A2 /* PassThrough.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = PassThrough.metal; sourceTree = "<group>"; };
+		EE6D6324257F855D001F0CE5 /* ScribbleDemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScribbleDemoViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -169,6 +171,7 @@
 			isa = PBXGroup;
 			children = (
 				AC8ECDE2256C0126009F19FD /* CaseDisplayViewController.swift */,
+				EE6D6324257F855D001F0CE5 /* ScribbleDemoViewController.swift */,
 				AC8ECDEA256C0737009F19FD /* MetalController.swift */,
 			);
 			path = Case;
@@ -364,6 +367,7 @@
 				AC8ECDDA256BFD98009F19FD /* DemoCasesViewController.swift in Sources */,
 				AC8ECE302573D75A009F19FD /* TexturePassThrough.metal in Sources */,
 				EE51C5D425721E29009CE7A2 /* MTKViewModesViewController.swift in Sources */,
+				EE6D6325257F855D001F0CE5 /* ScribbleDemoViewController.swift in Sources */,
 				EE51C5CB2571F1C8009CE7A2 /* TextureRenderer.swift in Sources */,
 				EE11DFF8257F2A990000C4DE /* Circle.metal in Sources */,
 				AC8ECDE3256C0126009F19FD /* CaseDisplayViewController.swift in Sources */,

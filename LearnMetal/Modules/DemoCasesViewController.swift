@@ -57,9 +57,15 @@ extension DemoCasesViewController: UITableViewDelegate {
             navigationController?.pushViewController(modeTestVC, animated: true)
         case .demos:
             let demo = DemoCases.allCases[indexPath.row]
-            let caseVC = CaseDisplayViewController()
-            caseVC.demoCase = demo
-            navigationController?.pushViewController(caseVC, animated: true)
+            switch demo {
+            case .scribble:
+                let caseVC = ScribbleDemoViewController()
+                navigationController?.pushViewController(caseVC, animated: true)
+            default:
+                let caseVC = CaseDisplayViewController()
+                caseVC.demoCase = demo
+                navigationController?.pushViewController(caseVC, animated: true)
+            }
         }
     }
 }

@@ -1,20 +1,17 @@
 //
-//  CaseDisplayViewController.swift
+//  ScribleDemoViewController.swift
 //  LearnMetal
 //
-//  Created by 王江 on 2020/11/23.
+//  Created by JiangWang on 2020/12/8.
 //
 
-import UIKit
 import MetalKit
 
-class CaseDisplayViewController: UIViewController {
-    
+class ScribbleDemoViewController: UIViewController {
+
     private var metalView: MTKView!
     
-    var renderer: Renderer?
-    
-    var demoCase: DemoCasesViewController.DemoCases = .triangle
+    var renderer: ScribbleTrackRenderer?
     
     var loop: RenderLoop? = nil
 
@@ -32,6 +29,10 @@ class CaseDisplayViewController: UIViewController {
         view.addConstraints(constraints)
         metalView.addConstraint(metalView.widthAnchor.constraint(equalTo: metalView.heightAnchor))
         
+        // pan gesture
+        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(didPan(_:)))
+        metalView.addGestureRecognizer(panGesture)
+        
         // make renderer
         makeRenderer()
         
@@ -48,24 +49,28 @@ class CaseDisplayViewController: UIViewController {
     }
 }
 
-private extension CaseDisplayViewController {
+private extension ScribbleDemoViewController {
     func makeRenderer() {
-        switch demoCase {
-        case .triangle:
-            renderer = TriangleRenderer()
-        case .rectangle:
-            renderer = RectangleRenderer()
-        case .texture:
-            if let fileUrl = Bundle.main.url(forResource: "texture", withExtension: "png") {
-                renderer = TextureRenderer(tartgetView: self.metalView, textureFile: fileUrl)
-            }
-        default:
-            break
-        }
-        renderer?.targetView = metalView
+        renderer = ScribbleTrackRenderer(targetView: self.metalView, trackDiameter: 50)
+        renderer?.targetView = self.metalView
     }
     
     func render() {
         renderer?.render()
+    }
+}
+
+private extension ScribbleDemoViewController {
+    @objc func didPan(_ panGesture: UIPanGestureRecognizer) {
+        print(panGesture.location(in: self.metalView))
+        switch panGesture.state {
+        case .began: fallthrough
+        case .changed: fallthrough
+        case .cancelled: fallthrough
+        case .ended:
+            renderer?.appendInputPoints([panGesture.location(in: self.metalView)])
+        default:
+            break
+        }
     }
 }
