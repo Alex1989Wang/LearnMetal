@@ -24,6 +24,7 @@ class DemoCasesViewController: UIViewController {
         case triangle = "Triangle"
         case rectangle = "Rectangle"
         case texture = "Texture"
+        case scribble = "Scribble"
     }
 
     private var tableView: UITableView!

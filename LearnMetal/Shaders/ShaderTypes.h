@@ -17,6 +17,11 @@
 typedef struct
 {
     vector_float3 position;
+} Vertex;
+
+typedef struct
+{
+    vector_float3 position;
     vector_float4 color;
 } VertexColor;
 
@@ -25,5 +30,11 @@ typedef struct
     vector_float3 position;
     vector_float2 textCoord;
 } VertexTextureCoord ;
+
+//typedef struct
+//{
+//    vector_float4 color;
+//    float diameter;
+//} CircleUniform;
 
 #endif /* AAPLShaderTypes_h */

@@ -21,6 +21,8 @@
 		AC8ECE1E256FF517009F19FD /* RectangleRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC8ECE1D256FF517009F19FD /* RectangleRenderer.swift */; };
 		AC8ECE2B2573D444009F19FD /* texture.png in Resources */ = {isa = PBXBuildFile; fileRef = AC8ECE2A2573D444009F19FD /* texture.png */; };
 		AC8ECE302573D75A009F19FD /* TexturePassThrough.metal in Sources */ = {isa = PBXBuildFile; fileRef = AC8ECE2F2573D75A009F19FD /* TexturePassThrough.metal */; };
+		EE11DFF0257F21510000C4DE /* ScribbleTrackRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE11DFEF257F21510000C4DE /* ScribbleTrackRenderer.swift */; };
+		EE11DFF8257F2A990000C4DE /* Circle.metal in Sources */ = {isa = PBXBuildFile; fileRef = EE11DFF7257F2A990000C4DE /* Circle.metal */; };
 		EE51C5CB2571F1C8009CE7A2 /* TextureRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE51C5CA2571F1C8009CE7A2 /* TextureRenderer.swift */; };
 		EE51C5D425721E29009CE7A2 /* MTKViewModesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE51C5D325721E29009CE7A2 /* MTKViewModesViewController.swift */; };
 		EE51C5F02572352E009CE7A2 /* PassThrough.metal in Sources */ = {isa = PBXBuildFile; fileRef = EE51C5EF2572352E009CE7A2 /* PassThrough.metal */; };
@@ -64,6 +66,8 @@
 		AC8ECE1D256FF517009F19FD /* RectangleRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RectangleRenderer.swift; sourceTree = "<group>"; };
 		AC8ECE2A2573D444009F19FD /* texture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = texture.png; sourceTree = "<group>"; };
 		AC8ECE2F2573D75A009F19FD /* TexturePassThrough.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = TexturePassThrough.metal; sourceTree = "<group>"; };
+		EE11DFEF257F21510000C4DE /* ScribbleTrackRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScribbleTrackRenderer.swift; sourceTree = "<group>"; };
+		EE11DFF7257F2A990000C4DE /* Circle.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Circle.metal; sourceTree = "<group>"; };
 		EE51C5CA2571F1C8009CE7A2 /* TextureRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextureRenderer.swift; sourceTree = "<group>"; };
 		EE51C5D325721E29009CE7A2 /* MTKViewModesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MTKViewModesViewController.swift; sourceTree = "<group>"; };
 		EE51C5DE25722E8A009CE7A2 /* ShaderTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShaderTypes.h; sourceTree = "<group>"; };
@@ -177,6 +181,7 @@
 				AC8ECDF8256C09D4009F19FD /* TriangleRenderer.swift */,
 				AC8ECE1D256FF517009F19FD /* RectangleRenderer.swift */,
 				EE51C5CA2571F1C8009CE7A2 /* TextureRenderer.swift */,
+				EE11DFEF257F21510000C4DE /* ScribbleTrackRenderer.swift */,
 			);
 			path = Renderer;
 			sourceTree = "<group>";
@@ -186,6 +191,7 @@
 			children = (
 				EE51C5EF2572352E009CE7A2 /* PassThrough.metal */,
 				AC8ECE2F2573D75A009F19FD /* TexturePassThrough.metal */,
+				EE11DFF7257F2A990000C4DE /* Circle.metal */,
 				EE51C5DE25722E8A009CE7A2 /* ShaderTypes.h */,
 			);
 			path = Shaders;
@@ -359,7 +365,9 @@
 				AC8ECE302573D75A009F19FD /* TexturePassThrough.metal in Sources */,
 				EE51C5D425721E29009CE7A2 /* MTKViewModesViewController.swift in Sources */,
 				EE51C5CB2571F1C8009CE7A2 /* TextureRenderer.swift in Sources */,
+				EE11DFF8257F2A990000C4DE /* Circle.metal in Sources */,
 				AC8ECDE3256C0126009F19FD /* CaseDisplayViewController.swift in Sources */,
+				EE11DFF0257F21510000C4DE /* ScribbleTrackRenderer.swift in Sources */,
 				AC8ECDF1256C0934009F19FD /* Renderer.swift in Sources */,
 				AC8ECDF9256C09D4009F19FD /* TriangleRenderer.swift in Sources */,
 				AC8ECE1E256FF517009F19FD /* RectangleRenderer.swift in Sources */,
