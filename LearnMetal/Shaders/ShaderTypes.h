@@ -31,10 +31,10 @@ typedef struct
     vector_float2 textCoord;
 } VertexTextureCoord ;
 
-//typedef struct
-//{
-//    vector_float4 color;
-//    float diameter;
-//} CircleUniform;
+typedef struct
+{
+    vector_float4 color;
+    uint16_t diameter;
+} CircleUniform;
 
 #endif /* AAPLShaderTypes_h */

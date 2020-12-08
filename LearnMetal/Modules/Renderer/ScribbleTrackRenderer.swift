@@ -111,8 +111,8 @@ extension ScribbleTrackRenderer {
               let tIndexesBuffer = trackIndexesBuffer else { return }
         circleEncoder.setVertexBuffer(trackVertexesBuffer, offset: 0, index: 0)
         circleEncoder.setRenderPipelineState(trackPPLState)
-//        var uniforms: CircleUniform = CircleUniform(color: vector_float4(1, 1, 1, 1), diameter: Float(trackWidth))
-        let fragUniformBuffer = device.makeBuffer(bytes: &trackWidth, length: MemoryLayout.size(ofValue: trackWidth), options: .storageModeShared)
+        var uniforms: CircleUniform = CircleUniform(color: vector_float4(0, 1, 0, 1), diameter: trackWidth)
+        let fragUniformBuffer = device.makeBuffer(bytes: &uniforms, length: MemoryLayout.size(ofValue: uniforms), options: .storageModeShared)
         circleEncoder.setFragmentBuffer(fragUniformBuffer, offset: 0, index: 0)
         circleEncoder.drawIndexedPrimitives(type: .triangle, indexCount: 6, indexType: .uint16, indexBuffer: tIndexesBuffer, indexBufferOffset: 0)
         circleEncoder.endEncoding()
