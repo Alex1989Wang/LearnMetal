@@ -37,4 +37,10 @@ typedef struct
     uint16_t diameter;
 } CircleUniform;
 
+typedef struct
+{
+    float x;
+    float y;
+} Point;
+
 #endif /* AAPLShaderTypes_h */

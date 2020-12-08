@@ -16,7 +16,7 @@ class ScribbleTrackRenderer: Renderer {
     private var trackPoints: [CGPoint] = []
     
     /// the offscreen texture to be filled with
-    private var singleTrackTexture: MTLTexture!
+//    private var singleTrackTexture: MTLTexture!
     
     private var singleTrackRenderPPLState: MTLRenderPipelineState?
     
@@ -41,14 +41,6 @@ class ScribbleTrackRenderer: Renderer {
             return nil
         }
         
-        let texDescriptor = MTLTextureDescriptor()
-        texDescriptor.width = Int(trackWidth)
-        texDescriptor.height = Int(trackWidth)
-        texDescriptor.sampleCount = 1
-        texDescriptor.pixelFormat = .bgra8Unorm
-        texDescriptor.usage = [.shaderRead, .renderTarget]
-        singleTrackTexture = device.makeTexture(descriptor: texDescriptor)
-        
         // circle vertex
         let trackVertexes: [Vertex] = [
             Vertex(position: vector_float3(1, 1, 0)),
@@ -67,7 +59,7 @@ class ScribbleTrackRenderer: Renderer {
 
         // offscreen render pipeline state
         let singleTrackRenderPPLDescriptor = MTLRenderPipelineDescriptor()
-        singleTrackRenderPPLDescriptor.colorAttachments[0].pixelFormat = singleTrackTexture.pixelFormat
+        singleTrackRenderPPLDescriptor.colorAttachments[0].pixelFormat = .bgra8Unorm
         singleTrackRenderPPLDescriptor.vertexFunction = library.makeFunction(name: "circle_vertex")
         singleTrackRenderPPLDescriptor.fragmentFunction = library.makeFunction(name: "circle_fragment")
         do {
@@ -108,7 +100,33 @@ extension ScribbleTrackRenderer {
 extension ScribbleTrackRenderer {
     func render() {
         guard let cmdQueue = MetalController.shared.commandQueue,
-              let mtlView = targetView else { return }
+              let mtlView = targetView,
+              let device = MetalController.shared.device else { return }
+        
+        guard trackPoints.count >= 2 else { return }
+        
+        var minX: CGFloat = CGFloat.greatestFiniteMagnitude;
+        var maxX: CGFloat = 0;
+        var minY: CGFloat = CGFloat.greatestFiniteMagnitude;
+        var maxY: CGFloat = 0;
+        trackPoints.forEach { (p) in
+            minX = min(p.x, minX)
+            maxX = max(p.x, maxX)
+            minY = min(p.y, minY)
+            maxY = max(p.y, maxY)
+        }
+
+        // track texture
+        let width = Int(maxX - minX)
+        let height = Int(maxY - minY)
+        if width <= 0 || height <= 0 { return }
+        let texDescriptor = MTLTextureDescriptor()
+        texDescriptor.width = width
+        texDescriptor.height = height
+        texDescriptor.sampleCount = 1
+        texDescriptor.pixelFormat = .bgra8Unorm
+        texDescriptor.usage = [.shaderRead, .renderTarget]
+        let singleTrackTexture = device.makeTexture(descriptor: texDescriptor)
 
         // render cicle to an offscreen texture
         let circleRenderPassDesc = MTLRenderPassDescriptor()
@@ -124,8 +142,25 @@ extension ScribbleTrackRenderer {
         circleEncoder.setVertexBuffer(trackVertexesBuffer, offset: 0, index: 0)
         circleEncoder.setRenderPipelineState(trackPPLState)
         circleEncoder.setFragmentBuffer(trackUniformBuffer, offset: 0, index: 0)
+        // points
+        let points: [Point] = trackPoints.map { (p) -> Point in
+            var point = Point()
+            point.x = Float(p.x - minX)
+            point.y = Float(p.y - minY)
+            return point
+        }
+        let pointsBuffer = device.makeBuffer(bytes: points, length: points.count * MemoryLayout.size(ofValue: points[0]), options: .storageModeShared)
+        circleEncoder.setFragmentBuffer(pointsBuffer, offset: 0, index: 1)
+        var pCount = points.count
+        let countBuffer = device.makeBuffer(bytes: &pCount, length: MemoryLayout.size(ofValue: pCount), options: .storageModeShared)
+        circleEncoder.setFragmentBuffer(countBuffer, offset: 0, index: 2)
         circleEncoder.drawIndexedPrimitives(type: .triangle, indexCount: 6, indexType: .uint16, indexBuffer: tIndexesBuffer, indexBufferOffset: 0)
         circleEncoder.endEncoding()
+        
+        // keep the last
+        if !trackPoints.isEmpty {
+            trackPoints.removeFirst(trackPoints.count - 1)
+        }
 
         /// render to screen
         guard let rendererPassDesc = mtlView.currentRenderPassDescriptor,
