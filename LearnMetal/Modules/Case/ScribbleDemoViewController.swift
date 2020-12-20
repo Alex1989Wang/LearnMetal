@@ -51,7 +51,7 @@ class ScribbleDemoViewController: UIViewController {
 
 private extension ScribbleDemoViewController {
     func makeRenderer() {
-        renderer = ScribbleTrackRenderer(targetView: self.metalView, trackDiameter: 50)
+        renderer = ScribbleTrackRenderer(targetView: self.metalView, targetViewSize: self.metalView.bounds.size, trackDiameter: 20)
         renderer?.targetView = self.metalView
     }
     
@@ -62,13 +62,19 @@ private extension ScribbleDemoViewController {
 
 private extension ScribbleDemoViewController {
     @objc func didPan(_ panGesture: UIPanGestureRecognizer) {
-        print(panGesture.location(in: self.metalView))
+        guard let view = self.metalView else { return }
+        print(panGesture.location(in: view))
         switch panGesture.state {
         case .began: fallthrough
         case .changed: fallthrough
         case .cancelled: fallthrough
         case .ended:
-            renderer?.appendInputPoints([panGesture.location(in: self.metalView)])
+            // fix: clamp points into the view
+            // blit command will assert (width) and (height)
+            var p = panGesture.location(in: view)
+            p.x = max(0, min(view.bounds.width, p.x))
+            p.y = max(0, min(view.bounds.height, p.y))
+            renderer?.appendInputPoints([p])
         default:
             break
         }

@@ -34,8 +34,11 @@ class ScribbleTrackRenderer: Renderer {
     /// the width || diameter of the track
     private var trackWidth: UInt16 = 10 //10 pt
     
-    init?(targetView view: MTKView, trackDiameter diameter: CGFloat) {
+    private var targetViewSize: CGSize = .zero
+    
+    init?(targetView view: MTKView, targetViewSize size: CGSize, trackDiameter diameter: CGFloat) {
         targetView = view
+        targetViewSize = size
         trackWidth = UInt16(diameter)
         
         guard let library = MetalController.shared.library,
@@ -115,21 +118,25 @@ extension ScribbleTrackRenderer {
         
         guard trackPoints.count >= 2 else { return }
         
-        var minX: CGFloat = CGFloat.greatestFiniteMagnitude;
-        var maxX: CGFloat = 0;
-        var minY: CGFloat = CGFloat.greatestFiniteMagnitude;
-        var maxY: CGFloat = 0;
+        var minX: Int = LONG_MAX;
+        var maxX: Int = 0;
+        var minY: Int = LONG_MAX;
+        var maxY: Int = 0;
         trackPoints.forEach { (p) in
-            minX = min(p.x, minX)
-            maxX = max(p.x, maxX)
-            minY = min(p.y, minY)
-            maxY = max(p.y, maxY)
+            minX = min(Int(p.x), minX)
+            maxX = max(Int(p.x), maxX)
+            minY = min(Int(p.y), minY)
+            maxY = max(Int(p.y), maxY)
         }
 
         // track texture
-        let width = Int(maxX - minX) + Int(trackWidth)
-        let height = Int(maxY - minY) + Int(trackWidth)
-        if width <= 0 || height <= 0 { return }
+        let tWidth = Int(trackWidth)
+        minX = max(0, minX - tWidth/2)
+        minY = max(0, minY - tWidth/2)
+        maxX = min(Int(targetViewSize.width), maxX + tWidth/2)
+        maxY = min(Int(targetViewSize.height), maxY + tWidth/2)
+        let width = maxX - minX
+        let height = maxY - minY
         let texDescriptor = MTLTextureDescriptor()
         texDescriptor.width = width
         texDescriptor.height = height
@@ -140,7 +147,7 @@ extension ScribbleTrackRenderer {
         
         // command buffer
         guard let cmdBuffer = cmdQueue.makeCommandBuffer() else { return }
-
+        
         let trackTextureInput = device.makeTexture(descriptor: texDescriptor)
         // input is the area alreay drawn
         guard let blitEncoder = cmdBuffer.makeBlitCommandEncoder(),
@@ -167,8 +174,8 @@ extension ScribbleTrackRenderer {
         // points
         let points: [Point] = trackPoints.map { (p) -> Point in
             var point = Point()
-            point.x = Float32(p.x - minX) + Float32(trackWidth / 2)
-            point.y = Float32(p.y - minY) + Float32(trackWidth / 2)
+            point.x = Float32(p.x - CGFloat(minX))
+            point.y = Float32(p.y - CGFloat(minY))
             return point
         }
         let pointsBuffer = device.makeBuffer(bytes: points, length: points.count * MemoryLayout.size(ofValue: points[0]), options: .storageModeShared)
