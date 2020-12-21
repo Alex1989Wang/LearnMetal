@@ -16,20 +16,63 @@ struct RasterizerData
 };
 
 bool is_point_between_lines(float2 point, array<Point, 2> line_points, float range) {
-    Point p1 = line_points[0];
-    Point p2 = line_points[1];
-    if (p1.x == p2.x) {
-        return point.x >= p1.x - range && point.x <= p1.x + range;
+    Point pl = line_points[0];
+    Point pr = line_points[1];
+    Point pTemp;
+    if (pl.x >= pr.x) {
+        pTemp = pl;
+        pl = pr;
+        pr = pTemp;
     }
-    if (p1.y == p2.y) {
-        return point.y >= p1.y - range && point.y <= p1.y + range;
+    if (pl.x == pr.x) {
+        float miny = min(pl.y, pr.y);
+        float maxy = max(pl.y, pr.y);
+        if (point.x >= pl.x - range && point.x <= pl.x + range) {
+            if (point.y >= miny && point.y <= maxy) {
+                return true;
+            }
+        }
+        float dist = fast::distance(float2(pl.x, miny), point);
+        if (dist <= range) {
+            return true;
+        }
+        dist = fast::distance(float2(pl.x, maxy), point);
+        return dist <= range;
+    }
+    if (pl.y == pr.y) {
+        float minx = min(pl.x, pr.x);
+        float maxx = max(pl.x, pr.x);
+        if (point.y >= pl.y - range && point.y <= pl.y + range) {
+            if (point.x >= minx && point.x <= maxx) {
+                return true;
+            }
+        }
+        float dist = fast::distance(float2(minx, pl.y), point);
+        if (dist <= range) {
+            return true;
+        }
+        dist = fast::distance(float2(maxx, pl.y), point);
+        return dist <= range;
     }
     // line
-    float k = (p1.y - p2.y)/(p1.x - p2.x);
-    float d1 = p1.y + length(float2(1, k)) * range - k * p1.x;
-    float d2 = p1.y - length(float2(1, k)) * range - k * p1.x;
-
-    return k * point.x + d1 >= point.y && k * point.x + d2 <= point.y;
+    float k = (pl.y - pr.y)/(pl.x - pr.x);
+    float d1 = pl.y + length(float2(1, k)) * range - k * pl.x;
+    float d2 = pl.y - length(float2(1, k)) * range - k * pl.x;
+    
+    bool inRange = k * point.x + d1 >= point.y && k * point.x + d2 <= point.y;
+    float miny = min(-(point.x / k) + (pl.y + pl.x / k), -(point.x / k) + (pr.y + pr.x / k));
+    float maxy = max(-(point.x / k) + (pl.y + pl.x / k), -(point.x / k) + (pr.y + pr.x / k));
+    inRange = point.y >= miny && point.y <= maxy;
+    if (inRange) {
+        return true;
+    } else {
+        float dist = fast::distance(float2(pl.x, pl.y), point);
+        if (dist <= range) {
+            return true;
+        }
+        dist = fast::distance(float2(pr.x, pr.y), point);
+        return dist <= range;
+    }
 }
 
 float4 color_for_point(float2 point, float4 base_color, float4 target_color, device const Point *reference_points, uint8_t pcount, float dis) {
