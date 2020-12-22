@@ -8,10 +8,15 @@
 import MetalKit
 
 class ScribbleDemoViewController: UIViewController {
+    
+    private enum ScribbleType {
+        case circleTexture
+        case primitiveLines
+    }
 
     private var metalView: MTKView!
     
-    var renderer: ScribbleTrackRenderer?
+    var renderer: BrushRenderer?
     
     var loop: RenderLoop? = nil
 

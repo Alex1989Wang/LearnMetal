@@ -1,23 +1,28 @@
 //
-//  OffscreenTextureRenderer.swift
+//  ScribbleTrackRenderer1.swift
 //  LearnMetal
 //
-//  Created by JiangWang on 2020/12/8.
+//  Created by JiangWang on 2020/12/22.
 //
 
 import MetalKit
 
-class ScribbleTrackRenderer: BrushRenderer {
+/// use *LINES* as drawing primitive
+class ScribbleTrackRenderer1: BrushRenderer {
     
     /// renderer's target view
     var targetView: MTKView?
     
+    /// 滑动的points
     private(set) var trackPoints: [CGPoint] = []
     
     /// the width || diameter of the track
     private(set) var trackWidth: UInt16 = 10 //10 pt
     
     private(set) var targetViewSize: CGSize = .zero
+
+    /// the offscreen texture to be filled with
+//    private var singleTrackTexture: MTLTexture!
     
     private var singleTrackRenderPPLState: MTLRenderPipelineState?
     
@@ -97,7 +102,16 @@ class ScribbleTrackRenderer: BrushRenderer {
         tracksTexDesc.sampleCount = 1
         tracksTexture = device.makeTexture(descriptor: tracksTexDesc)
     }
-    
+}
+
+//MARK: - Public
+extension ScribbleTrackRenderer1 {
+    func appendInputPoints(_ points: [CGPoint]) {
+        trackPoints.append(contentsOf: points)
+    }
+}
+
+extension ScribbleTrackRenderer1 {
     func render() {
         guard let cmdQueue = MetalController.shared.commandQueue,
               let mtlView = targetView,
@@ -207,10 +221,5 @@ class ScribbleTrackRenderer: BrushRenderer {
         cmdBuffer.present(drawable)
         cmdBuffer.commit()
     }
-}
-
-extension ScribbleTrackRenderer {
-    func appendInputPoints(_ points: [CGPoint]) {
-        trackPoints.append(contentsOf: points)
-    }
+    
 }
