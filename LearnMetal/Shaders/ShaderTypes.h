@@ -43,4 +43,9 @@ typedef struct
     float y;
 } Point;
 
+typedef struct
+{
+    vector_float3 position;
+} VertexPoint;
+
 #endif /* AAPLShaderTypes_h */

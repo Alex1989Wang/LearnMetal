@@ -26,8 +26,6 @@ class ScribbleTrackRenderer1: BrushRenderer {
     
     private var singleTrackRenderPPLState: MTLRenderPipelineState?
     
-    private var trackVertexesBuffer: MTLBuffer?
-    private var trackIndexesBuffer: MTLBuffer?
     private var trackUniformBuffer: MTLBuffer?
     
     private var tracksTexture: MTLTexture!
@@ -47,27 +45,19 @@ class ScribbleTrackRenderer1: BrushRenderer {
             return nil
         }
         
-        // circle vertex
-        let trackVertexes: [VertexTextureCoord] = [
-            VertexTextureCoord(position: vector_float3(1, -1, 0), textCoord: vector_float2(1, 1)),
-            VertexTextureCoord(position: vector_float3(-1, -1, 0), textCoord: vector_float2(0, 1)),
-            VertexTextureCoord(position: vector_float3(-1, 1, 0), textCoord: vector_float2(0, 0)),
-            VertexTextureCoord(position: vector_float3(1, 1, 0), textCoord: vector_float2(1, 0)),
-        ]
+        // common indexes
         let indexes: [UInt16] = [
             0, 1, 2,
             2, 3, 0
         ]
-        trackVertexesBuffer = device.makeBuffer(bytes: trackVertexes, length: trackVertexes.count * MemoryLayout.size(ofValue: trackVertexes[0]), options: .storageModeShared)
-        trackIndexesBuffer = device.makeBuffer(bytes: indexes, length: indexes.count * MemoryLayout.size(ofValue: indexes[0]), options: .storageModeShared)
         var uniforms: CircleUniform = CircleUniform(color: vector_float4(1, 0, 0, 1), diameter: trackWidth)
         trackUniformBuffer = device.makeBuffer(bytes: &uniforms, length: MemoryLayout.size(ofValue: uniforms), options: .storageModeShared)
 
         // offscreen render pipeline state
         let singleTrackRenderPPLDescriptor = MTLRenderPipelineDescriptor()
         singleTrackRenderPPLDescriptor.colorAttachments[0].pixelFormat = .r8Unorm
-        singleTrackRenderPPLDescriptor.vertexFunction = library.makeFunction(name: "circle_vertex")
-        singleTrackRenderPPLDescriptor.fragmentFunction = library.makeFunction(name: "circle_fragment")
+        singleTrackRenderPPLDescriptor.vertexFunction = library.makeFunction(name: "single_track_point_vertex")
+        singleTrackRenderPPLDescriptor.fragmentFunction = library.makeFunction(name: "single_track_point_fragment")
         do {
             singleTrackRenderPPLState = try device.makeRenderPipelineState(descriptor: singleTrackRenderPPLDescriptor)
         } catch {
@@ -167,26 +157,21 @@ extension ScribbleTrackRenderer1 {
         circleRenderPassDesc.colorAttachments[0].storeAction = .store
         
         guard let circleEncoder = cmdBuffer.makeRenderCommandEncoder(descriptor: circleRenderPassDesc),
-              let trackPPLState = singleTrackRenderPPLState,
-              let tIndexesBuffer = trackIndexesBuffer else { return }
-        circleEncoder.setVertexBuffer(trackVertexesBuffer, offset: 0, index: 0)
-        circleEncoder.setRenderPipelineState(trackPPLState)
-        circleEncoder.setFragmentBuffer(trackUniformBuffer, offset: 0, index: 0)
+              let trackPPLState = singleTrackRenderPPLState else { return }
         // points
-        let points: [Point] = trackPoints.map { (p) -> Point in
-            var point = Point()
-            point.x = Float32(p.x - CGFloat(minX))
-            point.y = Float32(p.y - CGFloat(minY))
+        let points: [VertexPoint] = trackPoints.map { (p) -> VertexPoint in
+            let x = Float(p.x - CGFloat(minX))/Float(width)
+            let y = Float(p.y - CGFloat(minY))/Float(height)
+            let point = VertexPoint(position: vector_float3(x, y, 0))
             return point
         }
         let pointsBuffer = device.makeBuffer(bytes: points, length: points.count * MemoryLayout.size(ofValue: points[0]), options: .storageModeShared)
-        circleEncoder.setFragmentBuffer(pointsBuffer, offset: 0, index: 1)
-        var pCount: UInt8 = UInt8(points.count)
-        let countBuffer = device.makeBuffer(bytes: &pCount, length: MemoryLayout.size(ofValue: pCount), options: .storageModeShared)
-        circleEncoder.setFragmentBuffer(countBuffer, offset: 0, index: 2)
+        circleEncoder.setVertexBuffer(pointsBuffer, offset: 0, index: 0)
+        circleEncoder.setRenderPipelineState(trackPPLState)
+        // uniform
+        circleEncoder.setFragmentBuffer(trackUniformBuffer, offset: 0, index: 0)
         // input texture
-        circleEncoder.setFragmentTexture(trackTextureInput, index: 0)
-        circleEncoder.drawIndexedPrimitives(type: .triangle, indexCount: 6, indexType: .uint16, indexBuffer: tIndexesBuffer, indexBufferOffset: 0)
+        circleEncoder.drawPrimitives(type: .lineStrip, vertexStart: 0, vertexCount: points.count)
         circleEncoder.endEncoding()
         
         // keep the last

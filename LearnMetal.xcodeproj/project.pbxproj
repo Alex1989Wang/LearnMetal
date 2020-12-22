@@ -21,6 +21,7 @@
 		AC8ECE1E256FF517009F19FD /* RectangleRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC8ECE1D256FF517009F19FD /* RectangleRenderer.swift */; };
 		AC8ECE2B2573D444009F19FD /* texture.png in Resources */ = {isa = PBXBuildFile; fileRef = AC8ECE2A2573D444009F19FD /* texture.png */; };
 		AC8ECE302573D75A009F19FD /* TexturePassThrough.metal in Sources */ = {isa = PBXBuildFile; fileRef = AC8ECE2F2573D75A009F19FD /* TexturePassThrough.metal */; };
+		ACC4A40425923F55008F8582 /* TrackRenderer1.metal in Sources */ = {isa = PBXBuildFile; fileRef = ACC4A40325923F55008F8582 /* TrackRenderer1.metal */; };
 		EE11DFF0257F21510000C4DE /* ScribbleTrackRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE11DFEF257F21510000C4DE /* ScribbleTrackRenderer.swift */; };
 		EE11DFF8257F2A990000C4DE /* Circle.metal in Sources */ = {isa = PBXBuildFile; fileRef = EE11DFF7257F2A990000C4DE /* Circle.metal */; };
 		EE51C5CB2571F1C8009CE7A2 /* TextureRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE51C5CA2571F1C8009CE7A2 /* TextureRenderer.swift */; };
@@ -69,6 +70,7 @@
 		AC8ECE1D256FF517009F19FD /* RectangleRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RectangleRenderer.swift; sourceTree = "<group>"; };
 		AC8ECE2A2573D444009F19FD /* texture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = texture.png; sourceTree = "<group>"; };
 		AC8ECE2F2573D75A009F19FD /* TexturePassThrough.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = TexturePassThrough.metal; sourceTree = "<group>"; };
+		ACC4A40325923F55008F8582 /* TrackRenderer1.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = TrackRenderer1.metal; sourceTree = "<group>"; };
 		EE11DFEF257F21510000C4DE /* ScribbleTrackRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScribbleTrackRenderer.swift; sourceTree = "<group>"; };
 		EE11DFF7257F2A990000C4DE /* Circle.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Circle.metal; sourceTree = "<group>"; };
 		EE51C5CA2571F1C8009CE7A2 /* TextureRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextureRenderer.swift; sourceTree = "<group>"; };
@@ -201,6 +203,7 @@
 				EE51C5EF2572352E009CE7A2 /* PassThrough.metal */,
 				AC8ECE2F2573D75A009F19FD /* TexturePassThrough.metal */,
 				EE11DFF7257F2A990000C4DE /* Circle.metal */,
+				ACC4A40325923F55008F8582 /* TrackRenderer1.metal */,
 				EE51C5DE25722E8A009CE7A2 /* ShaderTypes.h */,
 			);
 			path = Shaders;
@@ -381,6 +384,7 @@
 				AC8ECDF1256C0934009F19FD /* Renderer.swift in Sources */,
 				EE63D1F6259202AC00A062AD /* ScribbleTrackRenderer1.swift in Sources */,
 				AC8ECDF9256C09D4009F19FD /* TriangleRenderer.swift in Sources */,
+				ACC4A40425923F55008F8582 /* TrackRenderer1.metal in Sources */,
 				AC8ECE1E256FF517009F19FD /* RectangleRenderer.swift in Sources */,
 				EE63D1FB25921C3A00A062AD /* BrushRenderer.swift in Sources */,
 				AC8ECE10256D5A5C009F19FD /* RenderLoop.swift in Sources */,

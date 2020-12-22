@@ -56,7 +56,8 @@ class ScribbleDemoViewController: UIViewController {
 
 private extension ScribbleDemoViewController {
     func makeRenderer() {
-        renderer = ScribbleTrackRenderer(targetView: self.metalView, targetViewSize: self.metalView.bounds.size, trackDiameter: 20)
+//        renderer = ScribbleTrackRenderer(targetView: self.metalView, targetViewSize: self.metalView.bounds.size, trackDiameter: 20)
+        renderer = ScribbleTrackRenderer1(targetView: self.metalView, targetViewSize: self.metalView.bounds.size, trackDiameter: 20)
         renderer?.targetView = self.metalView
     }
     
