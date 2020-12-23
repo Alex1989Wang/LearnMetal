@@ -46,6 +46,7 @@ typedef struct
 typedef struct
 {
     vector_float3 position;
+    float radius;
 } VertexPoint;
 
 #endif /* AAPLShaderTypes_h */

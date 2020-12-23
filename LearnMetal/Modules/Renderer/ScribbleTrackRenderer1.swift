@@ -147,6 +147,7 @@ extension ScribbleTrackRenderer1 {
             return
         }
         blitEncoder.copy(from: tracksTex, sourceSlice: 0, sourceLevel: 0, sourceOrigin: MTLOriginMake(Int(minX), Int(minY), 0), sourceSize: MTLSizeMake(width, height, 1), to: iTrackTex, destinationSlice: 0, destinationLevel: 0, destinationOrigin:  MTLOriginMake(0, 0, 0))
+        blitEncoder.label = "Copy Tracks Texture to a Temperary Texture"
         blitEncoder.endEncoding()
 
         // render cicle to an offscreen texture
@@ -162,7 +163,7 @@ extension ScribbleTrackRenderer1 {
         let points: [VertexPoint] = trackPoints.map { (p) -> VertexPoint in
             let x = Float(p.x - CGFloat(minX))/Float(width)
             let y = Float(p.y - CGFloat(minY))/Float(height)
-            let point = VertexPoint(position: vector_float3(x, y, 0))
+            let point = VertexPoint(position: vector_float3(x, y, 0), radius: 20)
             return point
         }
         let pointsBuffer = device.makeBuffer(bytes: points, length: points.count * MemoryLayout.size(ofValue: points[0]), options: .storageModeShared)
@@ -171,7 +172,8 @@ extension ScribbleTrackRenderer1 {
         // uniform
         circleEncoder.setFragmentBuffer(trackUniformBuffer, offset: 0, index: 0)
         // input texture
-        circleEncoder.drawPrimitives(type: .lineStrip, vertexStart: 0, vertexCount: points.count)
+        circleEncoder.drawPrimitives(type: .point, vertexStart: 0, vertexCount: points.count)
+        circleEncoder.label = "Single Track Encoder"
         circleEncoder.endEncoding()
         
         // keep the last
@@ -185,6 +187,7 @@ extension ScribbleTrackRenderer1 {
             return
         }
         blitEncoder2.copy(from: sTrackTexture, sourceSlice: 0, sourceLevel: 0, sourceOrigin: MTLOriginMake(0, 0, 0), sourceSize: MTLSizeMake(width, height, 1), to: tracksTex, destinationSlice: 0, destinationLevel: 0, destinationOrigin: MTLOriginMake(Int(minX), Int(minY), 0))
+        blitEncoder2.label = "Copy a Single Track to Tracks Texture"
         blitEncoder2.endEncoding()
 
         /// render to screen

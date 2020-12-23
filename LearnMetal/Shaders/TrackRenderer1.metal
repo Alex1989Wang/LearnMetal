@@ -12,12 +12,14 @@ using namespace metal;
 struct RasterizerData
 {
     float4 position [[position]];
+    float radius [[point_size]];
 };
 
 vertex RasterizerData single_track_point_vertex(device const VertexPoint *verts [[buffer(0)]],
                                                 uint vid [[vertex_id]]) {
     RasterizerData out;
     out.position = float4(verts[vid].position, 1);
+    out.radius = verts[vid].radius;
     return out;
 }
 
