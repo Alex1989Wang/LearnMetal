@@ -59,6 +59,8 @@ private extension CaseDisplayViewController {
             if let fileUrl = Bundle.main.url(forResource: "texture", withExtension: "png") {
                 renderer = TextureRenderer(tartgetView: self.metalView, textureFile: fileUrl)
             }
+        case .circle:
+            renderer = CircleRenderer()
         default:
             break
         }

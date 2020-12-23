@@ -56,8 +56,8 @@ class ScribbleTrackRenderer1: BrushRenderer {
         // offscreen render pipeline state
         let singleTrackRenderPPLDescriptor = MTLRenderPipelineDescriptor()
         singleTrackRenderPPLDescriptor.colorAttachments[0].pixelFormat = .r8Unorm
-        singleTrackRenderPPLDescriptor.vertexFunction = library.makeFunction(name: "single_track_point_vertex")
-        singleTrackRenderPPLDescriptor.fragmentFunction = library.makeFunction(name: "single_track_point_fragment")
+        singleTrackRenderPPLDescriptor.vertexFunction = library.makeFunction(name: "single_cricle_point_vertex")
+        singleTrackRenderPPLDescriptor.fragmentFunction = library.makeFunction(name: "single_circle_point_fragment")
         do {
             singleTrackRenderPPLState = try device.makeRenderPipelineState(descriptor: singleTrackRenderPPLDescriptor)
         } catch {
