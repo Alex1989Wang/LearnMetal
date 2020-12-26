@@ -26,10 +26,10 @@ vertex RasterizerData single_cricle_point_vertex(device const VertexPoint *verts
 fragment float4 single_circle_point_fragment(RasterizerData in [[stage_in]],
                                           device const CircleUniform &uniform [[buffer(0)]],
                                           float2 pointCoord [[point_coord]]) {
-//    float dist = length(pointCoord - float2(0.5));
-//    if (dist >= 0.5) {
-//        return float4(0);
-//    }
+    float dist = length(pointCoord - float2(0.5));
+    if (dist >= 0.5) {
+        return float4(0);
+    }
     return uniform.color;
 }
 

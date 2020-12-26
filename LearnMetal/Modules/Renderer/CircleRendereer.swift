@@ -74,7 +74,7 @@ extension CircleRenderer {
         var circleUniform = CircleUniform(color: vector_float4(1, 0, 0, 1), diameter: 50)
         let uniformBuffer = device.makeBuffer(bytes: &circleUniform, length: MemoryLayout.size(ofValue: circleUniform), options: .storageModeShared)
         circleRenderEncoder?.setFragmentBuffer(uniformBuffer, offset: 0, index: 0)
-        circleRenderEncoder?.drawPrimitives(type: .lineStrip, vertexStart: 0, vertexCount: 3)
+        circleRenderEncoder?.drawPrimitives(type: .point, vertexStart: 0, vertexCount: 3)
         
         circleRenderEncoder?.endEncoding()
         

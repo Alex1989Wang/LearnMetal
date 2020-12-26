@@ -7,6 +7,12 @@
 
 import MetalKit
 
+extension CGPoint {
+    func distance(to point: CGPoint) -> CGFloat {
+        return sqrt(pow(x - point.x, 2) + pow(y - point.y, 2))
+    }
+}
+
 /// use *LINES* as drawing primitive
 class ScribbleTrackRenderer1: BrushRenderer {
     
@@ -17,13 +23,10 @@ class ScribbleTrackRenderer1: BrushRenderer {
     private(set) var trackPoints: [CGPoint] = []
     
     /// the width || diameter of the track
-    private(set) var trackWidth: UInt16 = 10 //10 pt
+    private(set) var trackWidth: UInt16 = 50 //50 pixel
     
     private(set) var targetViewSize: CGSize = .zero
 
-    /// the offscreen texture to be filled with
-//    private var singleTrackTexture: MTLTexture!
-    
     private var singleTrackRenderPPLState: MTLRenderPipelineState?
     
     private var trackUniformBuffer: MTLBuffer?
@@ -35,6 +38,8 @@ class ScribbleTrackRenderer1: BrushRenderer {
     private var rendererVertexesBuffer: MTLBuffer?
     private var rendererIndexesBuffer: MTLBuffer?
     
+    private var captureScope: MTLCaptureScope?
+    
     init?(targetView view: MTKView, targetViewSize size: CGSize, trackDiameter diameter: CGFloat) {
         targetView = view
         targetViewSize = size
@@ -44,6 +49,8 @@ class ScribbleTrackRenderer1: BrushRenderer {
               let device = MetalController.shared.device else {
             return nil
         }
+        
+        captureScope = MTLCaptureManager.shared().makeCaptureScope(device: device)
         
         // common indexes
         let indexes: [UInt16] = [
@@ -58,6 +65,16 @@ class ScribbleTrackRenderer1: BrushRenderer {
         singleTrackRenderPPLDescriptor.colorAttachments[0].pixelFormat = .r8Unorm
         singleTrackRenderPPLDescriptor.vertexFunction = library.makeFunction(name: "single_cricle_point_vertex")
         singleTrackRenderPPLDescriptor.fragmentFunction = library.makeFunction(name: "single_circle_point_fragment")
+        // blending
+        singleTrackRenderPPLDescriptor.colorAttachments[0].isBlendingEnabled = true
+        // rgb
+        singleTrackRenderPPLDescriptor.colorAttachments[0].rgbBlendOperation = .add
+        singleTrackRenderPPLDescriptor.colorAttachments[0].sourceRGBBlendFactor = .sourceAlpha
+        singleTrackRenderPPLDescriptor.colorAttachments[0].destinationRGBBlendFactor = .oneMinusSourceAlpha
+        // alpha
+        singleTrackRenderPPLDescriptor.colorAttachments[0].alphaBlendOperation = .add
+        singleTrackRenderPPLDescriptor.colorAttachments[0].sourceAlphaBlendFactor = .one
+        singleTrackRenderPPLDescriptor.colorAttachments[0].destinationAlphaBlendFactor = .oneMinusSourceAlpha;
         do {
             singleTrackRenderPPLState = try device.makeRenderPipelineState(descriptor: singleTrackRenderPPLDescriptor)
         } catch {
@@ -85,10 +102,11 @@ class ScribbleTrackRenderer1: BrushRenderer {
         }
         
         let tracksTexDesc = MTLTextureDescriptor()
-        tracksTexDesc.width = Int(view.bounds.width)
-        tracksTexDesc.height = Int(view.bounds.height)
+        let scale = UIScreen.main.scale
+        tracksTexDesc.width = Int(targetViewSize.width * scale)
+        tracksTexDesc.height = Int(targetViewSize.height * scale)
         tracksTexDesc.pixelFormat = .r8Unorm
-        tracksTexDesc.usage = [.shaderRead]
+        tracksTexDesc.usage = [.shaderRead, .renderTarget]
         tracksTexDesc.sampleCount = 1
         tracksTexture = device.makeTexture(descriptor: tracksTexDesc)
     }
@@ -109,62 +127,45 @@ extension ScribbleTrackRenderer1 {
         
         guard trackPoints.count >= 2 else { return }
         
-        var minX: Int = LONG_MAX;
-        var maxX: Int = 0;
-        var minY: Int = LONG_MAX;
-        var maxY: Int = 0;
-        trackPoints.forEach { (p) in
-            minX = min(Int(p.x), minX)
-            maxX = max(Int(p.x), maxX)
-            minY = min(Int(p.y), minY)
-            maxY = max(Int(p.y), maxY)
-        }
-
-        // track texture
-        let tWidth = Int(trackWidth)
-        minX = max(0, minX - tWidth/2)
-        minY = max(0, minY - tWidth/2)
-        maxX = min(Int(targetViewSize.width), maxX + tWidth/2)
-        maxY = min(Int(targetViewSize.height), maxY + tWidth/2)
-        let width = maxX - minX
-        let height = maxY - minY
-        let texDescriptor = MTLTextureDescriptor()
-        texDescriptor.width = width
-        texDescriptor.height = height
-        texDescriptor.sampleCount = 1
-        texDescriptor.pixelFormat = .r8Unorm
-        texDescriptor.usage = [.shaderRead, .renderTarget]
-        let singleTrackTextureOutput = device.makeTexture(descriptor: texDescriptor)
-        
-        // command buffer
-        guard let cmdBuffer = cmdQueue.makeCommandBuffer() else { return }
-        
-        let trackTextureInput = device.makeTexture(descriptor: texDescriptor)
-        // input is the area alreay drawn
-        guard let blitEncoder = cmdBuffer.makeBlitCommandEncoder(),
-              let iTrackTex = trackTextureInput,
-              let tracksTex = tracksTexture else {
-            return
-        }
-        blitEncoder.copy(from: tracksTex, sourceSlice: 0, sourceLevel: 0, sourceOrigin: MTLOriginMake(Int(minX), Int(minY), 0), sourceSize: MTLSizeMake(width, height, 1), to: iTrackTex, destinationSlice: 0, destinationLevel: 0, destinationOrigin:  MTLOriginMake(0, 0, 0))
-        blitEncoder.label = "Copy Tracks Texture to a Temperary Texture"
-        blitEncoder.endEncoding()
-
         // render cicle to an offscreen texture
         let circleRenderPassDesc = MTLRenderPassDescriptor()
-        circleRenderPassDesc.colorAttachments[0].texture = singleTrackTextureOutput
+        circleRenderPassDesc.colorAttachments[0].texture = tracksTexture
         circleRenderPassDesc.colorAttachments[0].loadAction = .clear
         circleRenderPassDesc.colorAttachments[0].clearColor = MTLClearColor(red: 0, green: 0, blue: 0, alpha: 1)
         circleRenderPassDesc.colorAttachments[0].storeAction = .store
         
+        captureScope?.label = "Single Circle"
+        captureScope?.begin()
+        guard let cmdBuffer = cmdQueue.makeCommandBuffer() else { return }
         guard let circleEncoder = cmdBuffer.makeRenderCommandEncoder(descriptor: circleRenderPassDesc),
               let trackPPLState = singleTrackRenderPPLState else { return }
         // points
-        let points: [VertexPoint] = trackPoints.map { (p) -> VertexPoint in
-            let x = Float(p.x - CGFloat(minX))/Float(width)
-            let y = Float(p.y - CGFloat(minY))/Float(height)
-            let point = VertexPoint(position: vector_float3(x, y, 0), radius: 20)
-            return point
+        var lastPoint: CGPoint? = nil
+        var pointPairs: [(CGPoint, CGPoint)] = []
+        for p in trackPoints {
+            if let lst = lastPoint {
+                let pair = (lst, p)
+                pointPairs.append(pair)
+            }
+            lastPoint = p
+        }
+        var points: [VertexPoint] = []
+        for pair in pointPairs {
+            let start = pair.0
+            let end = pair.1
+            let dis = start.distance(to: end)
+            let count = Int(ceil(dis / 1.0))
+            let xDelta = (end.x - start.x)/CGFloat(count)
+            let yDelta = (end.y - start.y)/CGFloat(count)
+            for idx in 0...count {
+                let x = Float(start.x + CGFloat(idx) * xDelta - targetViewSize.width * 0.5)/Float(targetViewSize.width * 0.5)
+                let y = Float(start.y + CGFloat(idx) * yDelta - targetViewSize.height * 0.5)/Float(targetViewSize.height * 0.5) * -1.0
+                let point = VertexPoint(position: vector_float3(x, y, 0), radius: Float(trackWidth))
+                points.append(point)
+            }
+            // last point
+            let lastVert = VertexPoint(position: vector_float3(Float(end.x), Float(end.y), 0), radius: Float(trackWidth))
+            points.append(lastVert)
         }
         let pointsBuffer = device.makeBuffer(bytes: points, length: points.count * MemoryLayout.size(ofValue: points[0]), options: .storageModeShared)
         circleEncoder.setVertexBuffer(pointsBuffer, offset: 0, index: 0)
@@ -176,21 +177,10 @@ extension ScribbleTrackRenderer1 {
         circleEncoder.label = "Single Track Encoder"
         circleEncoder.endEncoding()
         
-        // keep the last
-        if !trackPoints.isEmpty {
-            trackPoints.removeFirst(trackPoints.count - 1)
-        }
+        captureScope?.end()
         
-        // blit the single track renderred this time on the tracks
-        guard let blitEncoder2 = cmdBuffer.makeBlitCommandEncoder(),
-              let sTrackTexture = singleTrackTextureOutput else {
-            return
-        }
-        blitEncoder2.copy(from: sTrackTexture, sourceSlice: 0, sourceLevel: 0, sourceOrigin: MTLOriginMake(0, 0, 0), sourceSize: MTLSizeMake(width, height, 1), to: tracksTex, destinationSlice: 0, destinationLevel: 0, destinationOrigin: MTLOriginMake(Int(minX), Int(minY), 0))
-        blitEncoder2.label = "Copy a Single Track to Tracks Texture"
-        blitEncoder2.endEncoding()
-
         /// render to screen
+        guard let tracksTex = tracksTexture else { return }
         guard let rendererPassDesc = mtlView.currentRenderPassDescriptor,
               let drawable = targetView?.currentDrawable else { return }
         rendererPassDesc.colorAttachments[0].loadAction = .load

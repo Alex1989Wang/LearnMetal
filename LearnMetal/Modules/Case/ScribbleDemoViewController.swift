@@ -11,7 +11,7 @@ class ScribbleDemoViewController: UIViewController {
     
     private enum ScribbleType {
         case circleTexture
-        case primitiveLines
+        case primitivePoints
     }
 
     private var metalView: MTKView!
@@ -19,6 +19,8 @@ class ScribbleDemoViewController: UIViewController {
     var renderer: BrushRenderer?
     
     var loop: RenderLoop? = nil
+    
+    private var type: ScribbleType = .primitivePoints
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,8 +58,12 @@ class ScribbleDemoViewController: UIViewController {
 
 private extension ScribbleDemoViewController {
     func makeRenderer() {
-//        renderer = ScribbleTrackRenderer(targetView: self.metalView, targetViewSize: self.metalView.bounds.size, trackDiameter: 20)
-        renderer = ScribbleTrackRenderer1(targetView: self.metalView, targetViewSize: self.metalView.bounds.size, trackDiameter: 20)
+        switch type {
+        case .circleTexture:
+            renderer = ScribbleTrackRenderer(targetView: self.metalView, targetViewSize: self.metalView.bounds.size, trackDiameter: 20)
+        case .primitivePoints:
+            renderer = ScribbleTrackRenderer1(targetView: self.metalView, targetViewSize: self.metalView.bounds.size, trackDiameter: 50)
+        }
         renderer?.targetView = self.metalView
     }
     
