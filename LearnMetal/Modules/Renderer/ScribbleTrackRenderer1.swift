@@ -183,8 +183,10 @@ extension ScribbleTrackRenderer1 {
         guard let tracksTex = tracksTexture else { return }
         guard let rendererPassDesc = mtlView.currentRenderPassDescriptor,
               let drawable = targetView?.currentDrawable else { return }
-        rendererPassDesc.colorAttachments[0].loadAction = .load
-        rendererPassDesc.colorAttachments[0].clearColor = MTLClearColor(red: 1, green: 0, blue: 0, alpha: 1)
+        /*
+         If all the render target pixels are rendered to, choose the DontCare action. There are no costs associated with this action, and texture data is always interpreted as undefined.
+         */
+        rendererPassDesc.colorAttachments[0].loadAction = .dontCare
         rendererPassDesc.colorAttachments[0].texture = drawable.texture
         
         guard let rendererEncoder = cmdBuffer.makeRenderCommandEncoder(descriptor: rendererPassDesc),

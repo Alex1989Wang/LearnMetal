@@ -47,6 +47,7 @@ extension TriangleRenderer: Renderer {
               let mtkLayer = mtkView.layer as? CAMetalLayer,
               let drawable = mtkLayer.nextDrawable() else { return }
         renderPassDescriptor.colorAttachments[0].texture = drawable.texture
+        // If the previous contents of the render target do not need to be preserved and only some of its pixels are rendered to, choose the Clear action. This action incurs the cost of writing a clear value to each pixel.
         renderPassDescriptor.colorAttachments[0].loadAction = .clear
         renderPassDescriptor.colorAttachments[0].clearColor = MTLClearColorMake(0, 0, 0, 1)
 
